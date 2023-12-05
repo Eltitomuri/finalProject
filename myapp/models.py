@@ -1,7 +1,9 @@
 # models.py
 
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from flask_sqlalchemy import SQLAlchemy
 from config import *
+
+db = SQLAlchemy()
 
 PlayerTeamAssociation = db.Table(
     "player_team_association",
@@ -26,10 +28,6 @@ class Player(db.Model):
     personalFouls = db.Column(db.Integer)
     points = db.Column(db.Integer)
 
-    teams = db.relationship(
-        "Team", secondary=PlayerTeamAssociation, back_populates="players"
-    )
-
 
 class Team(db.Model):
     __tablename__ = "team"
@@ -46,19 +44,3 @@ class Team(db.Model):
     blocks = db.Column(db.Integer)
     personalFouls = db.Column(db.Integer)
     points = db.Column(db.Integer)
-
-    players = db.relationship(
-        "Player", secondary=PlayerTeamAssociation, back_populates="teams"
-    )
-
-
-class PlayerSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Player
-        load_instance = True
-
-
-class TeamSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Team
-        load_instance = True
