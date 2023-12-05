@@ -5,19 +5,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My App{% endblock %}</title>
+    <title>Welcome to the NBA Hub!</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('teams') }}">Teams</a></li>
-        </ul>
-    </nav>
+    <div id="background-container">
+
+        <img id="nba-court" src="images/nba_court.jpg" alt="NBA Court">
+        <div id="logo-container">
+            <img id="nba-logo" src="images/nba_logo.png" alt="NBA Logo">
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('team') }}">Teams</a></li>
+                    <li><a href="{{ url_for('player') }}">Players</a></li>
+                    <li><a href="{{ url_for('conferences') }}">Conferences</a></li>
+                    <p> Developed by Jorgan Melendez and Jorge Murillo </p>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
 
     <div>
-        {% block content %}{% endblock %}
     </div>
 </body>
 
