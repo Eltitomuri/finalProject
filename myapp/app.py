@@ -1,12 +1,8 @@
-#!/usr/bin/env python3
-"""Simple Flask app"""
-
 from flask import render_template, request, redirect, url_for
-from models import Player, Team, PlayerSchema, TeamSchema
-from config import db, app
-from build_db import create_tables
+from models import Player, Team, db
+from config import create_app
 
-create_tables()
+app = create_app()
 
 
 @app.route("/")
@@ -17,15 +13,7 @@ def home():
 @app.route("/team")
 def teams():
     teams_data = Team.query.all()
-    players_data = Player.query.all()
-
-    team_schema = TeamSchema(many=True)
-    player_schema = PlayerSchema(many=True)
-
-    teams = team_schema.dump(teams_data)
-    players = player_schema.dump(players_data)
-
-    return render_template("team.html", teams=teams, players=players)
+    return render_template("team.html", teams=teams_data)
 
 
 @app.route("/add_player_to_team", methods=["POST"])
@@ -63,3 +51,7 @@ def remove_player_from_team(player_id):
         db.session.commit()
 
     return redirect(url_for("teams"))
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
