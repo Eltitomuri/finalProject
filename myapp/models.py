@@ -1,15 +1,5 @@
-# models.py
-
 from flask_sqlalchemy import SQLAlchemy
-from config import *
-
-db = SQLAlchemy()
-
-PlayerTeamAssociation = db.Table(
-    "player_team_association",
-    db.Column("player_id", db.Integer, db.ForeignKey("player.id")),
-    db.Column("team_id", db.Integer, db.ForeignKey("team.id")),
-)
+from config import app, db
 
 
 class Player(db.Model):
@@ -44,3 +34,7 @@ class Team(db.Model):
     blocks = db.Column(db.Integer)
     personalFouls = db.Column(db.Integer)
     points = db.Column(db.Integer)
+
+
+with app.app_context():
+    db.create_all()
