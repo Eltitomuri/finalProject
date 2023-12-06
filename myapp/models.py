@@ -1,39 +1,88 @@
-from flask_sqlalchemy import SQLAlchemy
-from config import app, db
+from config import app, db, ma
 
 
 class Player(db.Model):
     __tablename__ = "player"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    player = db.Column(db.String(255), primary_key=True)
     teamAbbreviation = db.Column(db.String(255), nullable=False)
-    gamesPlayed = db.Column(db.Integer)
+    games = db.Column(db.Integer)
     fieldGoals = db.Column(db.Integer)
-    threePoints = db.Column(db.Integer)
-    freeThrowPercentage = db.Column(db.Integer)
+    threePointPercent = db.Column(db.Float)
+    freeThrowPercent = db.Column(db.Float)
     rebounds = db.Column(db.Integer)
     assists = db.Column(db.Integer)
     steals = db.Column(db.Integer)
     blocks = db.Column(db.Integer)
     personalFouls = db.Column(db.Integer)
     points = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<Player(name={self.teamAbbreviation!r})>"
+
+
+class PlayerSchema(ma.SQLAlchemyAutoSchema):
+    """Player schema"""
+
+    class Meta:
+        """Player schema"""
+
+        model = Player
+        load_instance = True
+
+    player = ma.auto_field()
+    teamAbbreviation = ma.auto_field()
+    games = ma.auto_field()
+    fieldGoals = ma.auto_field()
+    threePointPercent = ma.auto_field()
+    freeThrowPercent = ma.auto_field()
+    rebounds = ma.auto_field()
+    assists = ma.auto_field()
+    steals = ma.auto_field()
+    blocks = ma.auto_field()
+    personalFouls = ma.auto_field()
+    points = ma.auto_field()
 
 
 class Team(db.Model):
     __tablename__ = "team"
-    id = db.Column(db.Integer, primary_key=True)
+    teamAbbreviation = db.Column(db.String(255), primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    teamAbbreviation = db.Column(db.String(255), nullable=False)
-    gamesPlayed = db.Column(db.Integer)
+    location = db.Column(db.String(255), nullable=False)
     fieldGoals = db.Column(db.Integer)
-    threePoints = db.Column(db.Integer)
-    freeThrowPercentage = db.Column(db.Integer)
+    threePointPercent = db.Column(db.Float)
+    freeThrowPercent = db.Column(db.Float)
     rebounds = db.Column(db.Integer)
     assists = db.Column(db.Integer)
     steals = db.Column(db.Integer)
     blocks = db.Column(db.Integer)
     personalFouls = db.Column(db.Integer)
     points = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"<Team(name={self.teamAbbreviation!r})>"
+
+
+class TeamSchema(ma.SQLAlchemyAutoSchema):
+    """Player schema"""
+
+    class Meta:
+        """Player schema"""
+
+        model = Team
+        load_instance = True
+
+    teamAbbreviation = ma.auto_field()
+    name = ma.auto_field()
+    location = ma.auto_field()
+    fieldGoals = ma.auto_field()
+    threePointPercent = ma.auto_field()
+    freeThrowPercent = ma.auto_field()
+    rebounds = ma.auto_field()
+    assists = ma.auto_field()
+    steals = ma.auto_field()
+    blocks = ma.auto_field()
+    personalFouls = ma.auto_field()
+    points = ma.auto_field()
 
 
 with app.app_context():

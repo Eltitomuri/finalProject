@@ -2,6 +2,7 @@ from flask import Flask
 import pathlib
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 
 def create_app():
@@ -20,3 +21,4 @@ def create_app():
 
 app = create_app()
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
