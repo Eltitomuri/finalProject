@@ -1,0 +1,49 @@
+<!-- player.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Hub - Players</title>
+    <!-- Add your CSS stylesheets here -->
+</head>
+<body>
+    <h1>Players</h1>
+
+    <!-- Add Player Form -->
+    <form id="addPlayerForm">
+        <label for="newPlayerName">Name:</label>
+        <input type="text" id="newPlayerName" name="newPlayerName" required>
+
+        <label for="newPlayerTeam">Team:</label>
+        <input type="text" id="newPlayerTeam" name="newPlayerTeam" required>
+
+        <label for="newPlayerPosition">Position:</label>
+        <input type="text" id="newPlayerPosition" name="newPlayerPosition" required>
+
+        <!-- Add other fields as needed -->
+
+        <button type="submit">Add Player</button>
+    </form>
+
+    <!-- Player Table -->
+    <table id="playerTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Team</th>
+                <th>Position</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="playerTableBody">
+            <!-- Player rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script src="player.js"></script>
+</body>
+</html>
+
+
