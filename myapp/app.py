@@ -5,6 +5,7 @@ from build_db import main
 from flask_cors import cross_origin, CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import logging
 
 engine = create_engine(
     "postgresql://finalproject_rwmc_user:UgGVSPpBcrx2zBtaWlnLOpm7rq4wXJGr@dpg-clmch6cjtl8s73aimc9g-a.oregon-postgres.render.com/finalproject_rwmc"
@@ -155,7 +156,7 @@ def get_player_field(player, selectedField):
         logging.error(f"Error occurred while fetching player field: {e}")
         return jsonify({"error": str(e)}), 500
 
-
+# hello
 
 if __name__ == "__main__":
     main()
