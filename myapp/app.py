@@ -88,7 +88,6 @@ def get_team(teamName):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-from flask import jsonify, request
 
 @app.route("/api/v1/players/<player>")
 def get_player(player):
@@ -112,6 +111,21 @@ def get_player(player):
             return jsonify(player_data)
         else:
             return jsonify({"error": "Player not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/v1/teams/<teamName>/<selectedField>")
+def get_team_field(team1Name, selectedField):
+    try:
+        team = Team.query.filter_by(name=team1Name).first()
+        if team:
+            selected_field_value = getattr(team, selectedField)
+            if selected_field_value is not None:
+                return jsonify({"field": selectedField, "value": selected_field_value})
+            else:
+                return jsonify({"error": f"Field '{selectedField}' not found."}), 404
+        else:
+            return jsonify({"error": "Field not found."}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
