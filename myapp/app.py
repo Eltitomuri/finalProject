@@ -33,47 +33,35 @@ def get_teams_comparison():
             selected_field_value_team1 = getattr(team1, selectedField)
             selected_field_value_team2 = getattr(team2, selectedField)
 
-@app.route("/api/v1/teams/<teamName>/<selectedField>")
-def get_team_field(teamName, selectedField):
-    try:
-        team = Team.query.filter_by(name=teamName).first()
-        if team:
-            
-            if hasattr(team, selectedField):
-                
-                selected_field_value = getattr(team, selectedField)
-                
-                if isinstance(selected_field_value, bool):
-                   
-                    selected_field_value = str(selected_field_value)
-                return jsonify({"field": selectedField, "value": selected_field_value})
+            if (
+                selected_field_value_team1 is not None
+                and selected_field_value_team2 is not None
+            ):
+                return jsonify(
+                    {
+                        "team1": {
+                            "field": selectedField,
+                            "value": selected_field_value_team1,
+                        },
+                        "team2": {
+                            "field": selectedField,
+                            "value": selected_field_value_team2,
+                        },
+                    }
+                )
             else:
-                return jsonify({"error": f"Field '{selectedField}' not found in model."}), 404
+                return (
+                    jsonify(
+                        {
+                            "error": f"Field '{selectedField}' not found for one or more teams."
+                        }
+                    ),
+                    404,
+                )
         else:
-            return jsonify({"error": "Team not found."}), 404
+            return jsonify({"error": "One or more teams not found."}), 404
     except Exception as e:
-        
-        logging.error(f"Error occurred while fetching team field: {e}")
         return jsonify({"error": str(e)}), 500
-    
-@app.route("/api/v1/players/<player>/<selectedField>")
-def get_player_field(player, selectedField):
-    try:
-        player = Player.query.filter_by(player=player).first()
-        if player:
-            if hasattr(player, selectedField):
-                selected_field_value = getattr(player, selectedField)
-                if isinstance(selected_field_value, bool):
-                    selected_field_value = str(selected_field_value)
-                return jsonify({"field": selectedField, "value": selected_field_value})
-            else:
-                return jsonify({"error": f"Field '{selectedField}' not found in model."}), 404
-        else:
-            return jsonify({"error": "Player not found."}), 404
-    except Exception as e:
-        logging.error(f"Error occurred while fetching player field: {e}")
-        return jsonify({"error": str(e)}), 500
-
 
 
 if __name__ == "__main__":
