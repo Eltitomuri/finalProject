@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Get player IDs from URL
+    // Get team names from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const player1Id = urlParams.get('player1');
-    const player2Id = urlParams.get('player2');
+    const team1Name = urlParams.get('team1');
+    const team2Name = urlParams.get('team2');
 
-    // Fetch player data based on IDs
-    fetch(`/api/players/${player1Id}`)
+    // Fetch team data based on names
+    fetch(`http://127.0.0.1:5000/api/v1/teams/${team1Name}`)
         .then(response => response.json())
-        .then(player1 => {
-            fetch(`/api/players/${player2Id}`)
+        .then(team1 => {
+            fetch(`http://127.0.0.1:5000/api/v1/teams/${team2Name}`)
                 .then(response => response.json())
-                .then(player2 => {
-                    displayPlayers(player1, player2);
-                    displayPlayerTable(player1, player2);
-                    // Fetch and display initial chart (default field: "games")
-                    fetchAndDisplayChart("games", player1Name, player2Name);
+                .then(team2 => {
+                    displayTeams(team1, team2);
+                    displayTeamTable(team1, team2);
+                    // Fetch and display initial chart (default field: "fieldGoals")
+                    fetchAndDisplayChart("fieldGoals", team1Name, team2Name);
                 });
         });
 
@@ -22,49 +22,49 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('compare-field').addEventListener('change', function () {
         const selectedField = this.value;
         // Fetch and update the chart based on the selected field
-        fetchAndDisplayChart(selectedField, player1NAme, player2Name);
+        fetchAndDisplayChart(selectedField, team1Name, team2Name);
     });
 
-    // Function to display player names
-    function displayPlayers(player1, player2) {
-        const playerNamesContainer = document.getElementById('player-names');
-        playerNamesContainer.innerHTML = `
-            <div>${player1.name}</div>
-            <div>${player2.name}</div>
+    // Function to display team names
+    function displayTeams(team1, team2) {
+        const teamNamesContainer = document.getElementById('team-names');
+        teamNamesContainer.innerHTML = `
+            <div>${team1.name}</div>
+            <div>${team2.name}</div>
         `;
     }
 
-    // Function to display player information in the table
-    function displayPlayerTable(player1, player2) {
-        const playerTableBody = document.getElementById('playerTableBody');
+    // Function to display team information in the table
+    function displayTeamTable(team1, team2) {
+        const teamTableBody = document.getElementById('teamTableBody');
         // Clear existing rows
-        playerTableBody.innerHTML = '';
+        teamTableBody.innerHTML = '';
 
         // Add rows for each field
-        const fields = ['name', 'teamAbbreviation', 'games', 'fieldGoals', 'threePointPercent', 'freeThrowPercent', 'rebounds', 'assists', 'steals', 'blocks', 'personalFouls', 'points'];
+        const fields = ['abbreviation', 'name', 'location', 'fieldGoals', 'threePointPercent', 'freeThrowPercent', 'rebounds', 'assists', 'steals', 'blocks', 'personalFouls', 'points'];
         fields.forEach(field => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${field}</td>
-                <td>${player1[field]}</td>
-                <td>${player2[field]}</td>
+                <td>${team1[field]}</td>
+                <td>${team2[field]}</td>
             `;
-            playerTableBody.appendChild(row);
+            teamTableBody.appendChild(row);
         });
     }
 
     // Function to fetch data and display chart
-    function fetchAndDisplayChart(selectedField, player1Name, player2Name) {
-        // Fetch data for the selected field for both players
-        fetch(`/api/players/${player1Id}/${selectedField}`)
+    function fetchAndDisplayChart(selectedField, team1Name, team2Name) {
+        // Fetch data for the selected field for both teams
+        fetch(`http://127.0.0.1:5000/api/v1/teams/${team1Name}/${selectedField}`)
             .then(response => response.json())
-            .then(dataPlayer1 => {
-                fetch(`/api/players/${player2Id}/${selectedField}`)
+            .then(dataTeam1 => {
+                fetch(`http://127.0.0.1:5000/api/v1/teams/${team2Name}/${selectedField}`)
                     .then(response => response.json())
-                    .then(dataPlayer2 => {
+                    .then(dataTeam2 => {
                         // Get data for the chart
-                        const xValues = [player1Id.name, player2Id.name];
-                        const yValues = [dataPlayer1.value, dataPlayer2.value];
+                        const xValues = [team1.name, team2.name];
+                        const yValues = [dataTeam1.value, dataTeam2.value];
                         const barColors = ["red", "green"];
 
                         // Call the function to create or update the chart
@@ -95,3 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+
+
+
