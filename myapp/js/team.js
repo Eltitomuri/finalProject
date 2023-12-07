@@ -6,7 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('compareButton').addEventListener('click', function () {
         const selectedTeams = getSelectedTeams();
         if (selectedTeams.length === 2) {
-            window.location.href = `/compareTeam.html?team1=${selectedTeams[0]}&team2=${selectedTeams[1]}`;
+            const params = new URLSearchParams();
+            params.set('team1', selectedTeams[0]);
+            params.set('team2', selectedTeams[1]);
+            window.location.href = `/compareTeam.html?${params}`;
         } else {
             alert('Please select exactly two teams for comparison.');
         }
