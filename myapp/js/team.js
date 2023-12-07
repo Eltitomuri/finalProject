@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${team.blocks}</td>
                 <td>${team.personalFouls}</td>
                 <td>${team.points}</td>
-                <td><input type="checkbox" class="teamCheckbox" data-team-id="${team.id}"></td>
+                <td><input type="checkbox" class="teamCheckbox" data-team-id="${team.name}"></td>
             `;
             teamTableBody.appendChild(row);
         });
@@ -50,11 +50,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function handleCheckboxChange() {
         const selectedTeams = getSelectedTeams();
-
         const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
+
+        const checkedCount = Array.from(teamCheckboxes).filter(checkbox => checkbox.checked).length;
+
         teamCheckboxes.forEach(checkbox => {
             const teamId = checkbox.dataset.teamId;
             checkbox.disabled = selectedTeams.includes(teamId) && !checkbox.checked;
+        });
+
+        teamCheckboxes.forEach(checkbox => {
+            checkbox.disabled = checkbox.checked && checkedCount > 1 && !selectedTeams.includes(checkbox.dataset.teamId);
         });
 
         const compareButton = document.getElementById('compareButton');
@@ -66,3 +72,4 @@ document.addEventListener('DOMContentLoaded', function () {
         return Array.from(teamCheckboxes).map(checkbox => checkbox.dataset.teamId);
     }
 });
+

@@ -63,6 +63,58 @@ def get_teams():
     ]
     return jsonify({"teams": teams_schema.dump(teams_data)})
 
+@app.route("/api/v1/teams/<teamName>")
+def get_team(teamName):
+    try:
+        team = Team.query.filter_by(name=teamName).first()
+        if team:
+            team_data = {
+                "teamAbbreviation": team.teamAbbreviation,
+                "name": team.name,
+                "location": team.location,
+                "fieldGoals": team.fieldGoals,
+                "threePointPercent": team.threePointPercent,
+                "freeThrowPercent": team.freeThrowPercent,
+                "rebounds": team.rebounds,
+                "assists": team.assists,
+                "steals": team.steals,
+                "blocks": team.blocks,
+                "personalFouls": team.personalFouls,
+                "points": team.points,
+            }
+            return jsonify(team_data)
+        else:
+            return jsonify({"error": "Team not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+from flask import jsonify, request
+
+@app.route("/api/v1/players/<player>")
+def get_player(player):
+    try:
+        player = Player.query.filter_by(player=player).first()
+        if player:
+            player_data = {
+            "player": player.player,
+            "teamAbbreviation": player.teamAbbreviation,
+            "games": player.games,
+            "fieldGoals": player.fieldGoals,
+            "threePointPercent": player.threePointPercent,
+            "freeThrowPercent": player.freeThrowPercent,
+            "rebounds": player.rebounds,
+            "assists": player.assists,
+            "steals": player.steals,
+            "blocks": player.blocks,
+            "personalFouls": player.personalFouls,
+            "points": player.points,
+            }
+            return jsonify(player_data)
+        else:
+            return jsonify({"error": "Player not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     main()

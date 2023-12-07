@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const player2Id = urlParams.get('player2');
 
     // Fetch player data based on IDs
-    fetch(`http://127.0.0.1:5000/api/v1/players/${player1Id}`)
+    fetch(`/api/players/${player1Id}`)
         .then(response => response.json())
         .then(player1 => {
-            fetch(`http://127.0.0.1:5000/api/v1/players/${player2Id}`)
+            fetch(`/api/players/${player2Id}`)
                 .then(response => response.json())
                 .then(player2 => {
                     displayPlayers(player1, player2);
                     displayPlayerTable(player1, player2);
                     // Fetch and display initial chart (default field: "games")
-                    fetchAndDisplayChart("games", player1Id, player2Id);
+                    fetchAndDisplayChart("games", player1Name, player2Name);
                 });
         });
 
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('compare-field').addEventListener('change', function () {
         const selectedField = this.value;
         // Fetch and update the chart based on the selected field
-        fetchAndDisplayChart(selectedField, player1Id, player2Id);
+        fetchAndDisplayChart(selectedField, player1NAme, player2Name);
     });
 
     // Function to display player names
@@ -54,12 +54,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to fetch data and display chart
-    function fetchAndDisplayChart(selectedField, player1Id, player2Id) {
+    function fetchAndDisplayChart(selectedField, player1Name, player2Name) {
         // Fetch data for the selected field for both players
-        fetch(`http://127.0.0.1:5000/api/v1/players/${player1Id}/${selectedField}`)
+        fetch(`/api/players/${player1Id}/${selectedField}`)
             .then(response => response.json())
             .then(dataPlayer1 => {
-                fetch(`http://127.0.0.1:5000/api/v1/players/${player2Id}/${selectedField}`)
+                fetch(`/api/players/${player2Id}/${selectedField}`)
                     .then(response => response.json())
                     .then(dataPlayer2 => {
                         // Get data for the chart
