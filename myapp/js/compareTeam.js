@@ -1,5 +1,3 @@
-// compareTeam.js
-
 document.addEventListener('DOMContentLoaded', function () {
     // Get team IDs from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -61,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`http://127.0.0.1:5000/api/v1/teams/${team1Name}/${selectedField}`)
             .then(response => response.json())
             .then(dataTeam1 => {
-                fetch(`/api/teams/${team2NAme}/${selectedField}`)
+                fetch(`http://127.0.0.1:5000/api/v1/teams/${team2Name}/${selectedField}`)
                     .then(response => response.json())
                     .then(dataTeam2 => {
                         // Get data for the chart
@@ -80,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const chartContainer = document.getElementById('chart-container');
         // Remove any existing chart
         chartContainer.innerHTML = '<canvas id="myChart"></canvas>';
-        
+
         // Create a new chart
         new Chart("myChart", {
             type: "bar",
