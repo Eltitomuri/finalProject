@@ -1,0 +1,82 @@
+<!-- compareTeam.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Hub - Compare Teams</title>
+    <link rel="stylesheet" href="css/compareTeam.css">
+</head>
+
+<body>
+    <div id="header">
+        <nav>
+            <ul>
+                <li><a href='team.html'>Back to Teams</a></li>
+                <li><a href='base.html'>Homes</a></li>
+                
+            </ul>
+        </nav>
+    </div>
+
+    <div id="compare-container">
+        <h1>Compare Teams</h1>
+        <div id="team-names">
+            <!-- Team names will be dynamically inserted here -->
+        </div>
+
+        <div id="compare-options">
+            <label for="compare-field">Compare:</label>
+            <select id="compare-field">
+                <option value="fieldGoals">Field Goals</option>
+                <option value="threePointPercent">Three Point Percentage</option>
+                <option value="freeThrowPercent">Free Throw Percentage</option>
+                <option value="rebounds">Rebounds</option>
+                <option value="assists">Assists</option>
+                <option value="steals">Steals</option>
+                <option value="blocks">Blocks</option>
+                <option value="personalFouls">Personal Fouls</option>
+                <option value="points">Points</option>
+            </select>
+        </div>
+
+        <!-- Team table container -->
+        <div id="team-table-container">
+            <table id="team-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Abbreviation</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>FieldGoals</th>
+                        <th>Three Points</th>
+                        <th>Free Throws</th>
+                        <th>Rebounds</th>
+                        <th>Assists</th>
+                        <th>Steals</th>
+                        <th>Blocks</th>
+                        <th>Personal Fouls</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody id="teamTableBody">
+                    <!-- Rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chart-container">
+            <!-- Chart will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script src="../js/compareTeam.js"></script>
+</body>
+
+</html>
+
+
+

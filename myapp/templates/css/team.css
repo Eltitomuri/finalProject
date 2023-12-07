@@ -1,0 +1,61 @@
+/* team.css */
+
+body {
+    background: url('../images/back_image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff; /* Text color */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #ffcc00; /* Header color */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#compareButton {
+    display: block;
+    margin: 0 auto;
+    background-color: #ffcc00;
+    color: #1e1e1e;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#compareButton:hover {
+    background-color: #ffdb4d;
+}
+
+#teamTable {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+#teamTable th, #teamTable td {
+    border: 1px solid #666;
+    padding: 10px;
+    text-align: left;
+}
+
+#teamTable th {
+    background-color: rgba(0, 0, 0, 0.7); /* Transparent background for table header */
+    color: #ffcc00;
+}
+
+#teamTable td {
+    background-color: rgba(0, 0, 0, 0.8); /* Transparent background for table cells */
+}
+
+.playerDropdown {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* Add any additional styling as needed */

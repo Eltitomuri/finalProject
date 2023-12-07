@@ -1,30 +1,26 @@
 // team.js
+
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     fetchTeams();
 
-    
-    document.getElementById('addTeamForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const newTeam = {
-            abbreviation: document.getElementById('newTeamAbbreviation').value,
-           
-        };
-
-        
-        addTeam(newTeam);
+    // Event listener for the Compare Teams button
+    document.getElementById('compareButton').addEventListener('click', function () {
+        const selectedTeams = getSelectedTeams();
+        if (selectedTeams.length === 2) {
+            window.location.href = `/compareTeam.html?team1=${selectedTeams[0]}&team2=${selectedTeams[1]}`;
+        } else {
+            alert('Please select exactly two teams for comparison.');
+        }
     });
 
-    
     function fetchTeams() {
-        
-        fetch('/api/teams')
+        fetch('/api/v1/teams')
             .then(response => response.json())
             .then(data => populateTeamTable(data))
             .catch(error => console.error('Error fetching teams:', error));
     }
 
-    
     function populateTeamTable(teams) {
         const teamTableBody = document.getElementById('teamTableBody');
         teamTableBody.innerHTML = '';
@@ -32,58 +28,47 @@ document.addEventListener('DOMContentLoaded', function () {
         teams.forEach(team => {
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td>${team.id}</td>
                 <td>${team.abbreviation}</td>
-                <td>
-                    <select class="playerDropdown" data-team-abbreviation="${team.abbreviation}">
-                        <!-- Player options will be dynamically added here -->
-                    </select>
-                </td>
+                <td>${team.name}</td>
+                <td>${team.location}</td>
+                <td>${team.fieldGoals}</td>
+                <td>${team.threePointPercent}</td>
+                <td>${team.freeThrowPercent}</td>
+                <td>${team.rebounds}</td>
+                <td>${team.assists}</td>
+                <td>${team.steals}</td>
+                <td>${team.blocks}</td>
+                <td>${team.personalFouls}</td>
+                <td>${team.points}</td>
+                <td><input type="checkbox" class="teamCheckbox" data-team-id="${team.id}"></td>
             `;
             teamTableBody.appendChild(row);
+        });
 
-            
-            fetchPlayersForTeam(team.abbreviation);
+        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
+        teamCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', handleCheckboxChange);
         });
     }
 
-    
-    function fetchPlayersForTeam(teamAbbreviation) {
-        
-        fetch(`/api/players?teamAbbreviation=${teamAbbreviation}`)
-            .then(response => response.json())
-            .then(players => populatePlayerDropdown(players, teamAbbreviation))
-            .catch(error => console.error(`Error fetching players for ${teamAbbreviation}:`, error));
-    }
+    function handleCheckboxChange() {
+        const selectedTeams = getSelectedTeams();
 
-    
-    function populatePlayerDropdown(players, teamAbbreviation) {
-        const playerDropdowns = document.querySelectorAll(`.playerDropdown[data-team-abbreviation="${teamAbbreviation}"]`);
-        
-        playerDropdowns.forEach(dropdown => {
-            players.forEach(player => {
-                const option = document.createElement('option');
-                option.value = player.id;
-                option.text = player.name;
-                dropdown.add(option);
-            });
+        // Disable checkboxes for already selected teams
+        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
+        teamCheckboxes.forEach(checkbox => {
+            const teamId = checkbox.dataset.teamId;
+            checkbox.disabled = selectedTeams.includes(teamId) && !checkbox.checked;
         });
+
+        // Disable Compare button if not exactly two teams are selected
+        const compareButton = document.getElementById('compareButton');
+        compareButton.disabled = selectedTeams.length !== 2;
     }
 
-    
-    function addTeam(newTeam) {
-        
-        fetch('/api/teams', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTeam),
-        })
-        .then(response => response.json())
-        .then(() => {
-           
-            fetchTeams();
-        })
-        .catch(error => console.error('Error adding team:', error));
+    function getSelectedTeams() {
+        const teamCheckboxes = document.querySelectorAll('.teamCheckbox:checked');
+        return Array.from(teamCheckboxes).map(checkbox => checkbox.dataset.teamId);
     }
 });

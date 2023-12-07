@@ -5,26 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Hub - Teams</title>
-  
+    <link rel="stylesheet" href="css/team.css">
 </head>
 <body>
     <h1>Teams</h1>
 
 
-    <form id="addTeamForm">
-        <label for="newTeamAbbreviation">Abbreviation:</label>
-        <input type="text" id="newTeamAbbreviation" name="newTeamAbbreviation" required>
-
-
-        <button type="submit">Add Team</button>
-    </form>
+    <button id="compareButton">Compare Teams</button>
 
 
     <table id="teamTable">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Abbreviation</th>
-                <th>Players</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>FieldGoals</th>
+                <th>Three Points</th>
+                <th>Free Throws</th>
+                <th>Rebounds</th>
+                <th>Assists</th>
+                <th>Steals</th>
+                <th>Blocks</th>
+                <th>Personal Fouls</th>
+                <th>Points</th>
             </tr>
         </thead>
         <tbody id="teamTableBody">
@@ -32,6 +37,6 @@
         </tbody>
     </table>
 
-    <script src="team.js"></script>
+    <script src="../js/team.js"></script>
 </body>
 </html>

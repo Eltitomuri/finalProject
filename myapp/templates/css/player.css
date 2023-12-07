@@ -1,0 +1,65 @@
+/* player.css */
+body {
+    background: url('../images/back_image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff; /* Text color */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #ffcc00; /* Header color */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#playerTable {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+#playerTable th, #playerTable td {
+    border: 1px solid #666;
+    padding: 10px;
+    text-align: left;
+}
+
+#playerTable th {
+    background-color: rgba(0, 0, 0, 0.7); /* Transparent background for table header */
+    color: #ffcc00;
+}
+
+#playerTable td {
+    background-color: rgba(0, 0, 0, 0.8); /* Transparent background for table cells */
+}
+
+.editBtn, .deleteBtn, .compareCheckbox {
+    background-color: #ffcc00;
+    color: #1e1e1e;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.editBtn:hover, .deleteBtn:hover, .compareCheckbox:hover {
+    background-color: #ffdb4d;
+}
+
+#compareButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 15px;
+    background-color: #ffcc00;
+    color: #1e1e1e;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#compareButton:hover {
+    background-color: #ffdb4d;
+}
+
