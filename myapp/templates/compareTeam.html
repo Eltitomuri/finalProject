@@ -15,71 +15,76 @@
         <nav>
             <ul>
                 <li><a href='team.html'>Back to Teams</a></li>
-<<<<<<< HEAD
-                <li><a href='base.html'>Homes</a></li>
-
-=======
                 <li><a href='base.html'>Home</a></li>
->>>>>>> 191d964b88cde5eb14273e0e6225dfcb9f500813
             </ul>
         </nav>
     </div>
 
     <div id="compare-container">
         <h1>Compare Teams</h1>
-        <div id="team-names">
+
+        <!-- Team names and compare options -->
+        <div id="team-options">
+            <div id="team-names">
+                <!-- Team names will be dynamically inserted here -->
+            </div>
+
+            <div id="compare-options">
+                <label for="compare-field">Compare:</label>
+                <select id="compare-field">
+                    <option value="fieldGoals">Field Goals</option>
+                    <option value="threePointPercent">Three Point Percentage</option>
+                    <option value="freeThrowPercent">Free Throw Percentage</option>
+                    <option value="rebounds">Rebounds</option>
+                    <option value="assists">Assists</option>
+                    <option value="steals">Steals</option>
+                    <option value="blocks">Blocks</option>
+                    <option value="personalFouls">Personal Fouls</option>
+                    <option value="points">Points</option>
+                </select>
+            </div>
         </div>
 
-        <div id="compare-options">
-            <label for="compare-field">Compare:</label>
-            <select id="compare-field">
-                <option value="fieldGoals">Field Goals</option>
-                <option value="threePointPercent">Three Point Percentage</option>
-                <option value="freeThrowPercent">Free Throw Percentage</option>
-                <option value="rebounds">Rebounds</option>
-                <option value="assists">Assists</option>
-                <option value="steals">Steals</option>
-                <option value="blocks">Blocks</option>
-                <option value="personalFouls">Personal Fouls</option>
-                <option value="points">Points</option>
-            </select>
-        </div>
+        <!-- Gray background -->
+        <div id="team-stats-container">
+            <!-- Team table container -->
+            <div id="team-table-container">
+                <table id="team-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>FieldGoals</th>
+                            <th>Three Points</th>
+                            <th>Free Throws</th>
+                            <th>Rebounds</th>
+                            <th>Assists</th>
+                            <th>Steals</th>
+                            <th>Blocks</th>
+                            <th>Personal Fouls</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teamTableBody">
+                        <!-- Rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
 
-        <div id="team-table-container">
-            <table id="team-table">
-                <thead>
-                    <th>Abbreviation</th>
-                    <th>Name</th>
-                    <th>Location</th>
-                    <th>FieldGoals</th>
-                    <th>Three Points</th>
-                    <th>Free Throws</th>
-                    <th>Rebounds</th>
-                    <th>Assists</th>
-                    <th>Steals</th>
-                    <th>Blocks</th>
-                    <th>Personal Fouls</th>
-                    <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody id="teamTableBody">
-                </tbody>
-            </table>
-        </div>
-
-        <div id="chart-container">
+            <!-- Chart container -->
+            <div id="chart-container">
+                <!-- Chart will be dynamically inserted here -->
+            </div>
         </div>
     </div>
 
     <script src="../js/compareTeam.js"></script>
 </body>
 
-<<<<<<< HEAD
-</html>
-=======
 </html>
 
 
 
 
->>>>>>> 191d964b88cde5eb14273e0e6225dfcb9f500813
+
+
