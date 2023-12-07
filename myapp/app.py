@@ -63,6 +63,7 @@ def get_teams():
     ]
     return jsonify({"teams": teams_schema.dump(teams_data)})
 
+
 @app.route("/api/v1/teams/<teamName>")
 def get_team(teamName):
     try:
@@ -87,8 +88,10 @@ def get_team(teamName):
             return jsonify({"error": "Team not found."}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+
 from flask import jsonify, request
+
 
 @app.route("/api/v1/players/<player>")
 def get_player(player):
@@ -96,18 +99,18 @@ def get_player(player):
         player = Player.query.filter_by(player=player).first()
         if player:
             player_data = {
-            "player": player.player,
-            "teamAbbreviation": player.teamAbbreviation,
-            "games": player.games,
-            "fieldGoals": player.fieldGoals,
-            "threePointPercent": player.threePointPercent,
-            "freeThrowPercent": player.freeThrowPercent,
-            "rebounds": player.rebounds,
-            "assists": player.assists,
-            "steals": player.steals,
-            "blocks": player.blocks,
-            "personalFouls": player.personalFouls,
-            "points": player.points,
+                "player": player.player,
+                "teamAbbreviation": player.teamAbbreviation,
+                "games": player.games,
+                "fieldGoals": player.fieldGoals,
+                "threePointPercent": player.threePointPercent,
+                "freeThrowPercent": player.freeThrowPercent,
+                "rebounds": player.rebounds,
+                "assists": player.assists,
+                "steals": player.steals,
+                "blocks": player.blocks,
+                "personalFouls": player.personalFouls,
+                "points": player.points,
             }
             return jsonify(player_data)
         else:
