@@ -18,101 +18,20 @@ with app.app_context():
     teams_schema = TeamSchema(many=True)
 
 
-@app.route("/api/v1/players")
-def get_players():
-    players = Player.query.all()
-    players_data = [
-        {
-            "player": player.player,
-            "teamAbbreviation": player.teamAbbreviation,
-            "games": player.games,
-            "fieldGoals": player.fieldGoals,
-            "threePointPercent": player.threePointPercent,
-            "freeThrowPercent": player.freeThrowPercent,
-            "rebounds": player.rebounds,
-            "assists": player.assists,
-            "steals": player.steals,
-            "blocks": player.blocks,
-            "personalFouls": player.personalFouls,
-            "points": player.points,
-        }
-        for player in players
-    ]
-    return jsonify({"players": players_schema.dump(players_data)})
+@app.route("/api/v1/teams/compare")
+def get_teams_comparison():
+    team1Name = request.args.get("team1Name")
+    team2Name = request.args.get("team2Name")
+    selectedField = request.args.get("selectedField")
+    print(f"Received request for {team1Name}, {team2Name}, {selectedField}")
 
-
-@app.route("/api/v1/teams")
-def get_teams():
-    teams = Team.query.all()
-    teams_data = [
-        {
-            "teamAbbreviation": team.teamAbbreviation,
-            "name": team.name,
-            "location": team.location,
-            "fieldGoals": team.fieldGoals,
-            "threePointPercent": team.threePointPercent,
-            "freeThrowPercent": team.freeThrowPercent,
-            "rebounds": team.rebounds,
-            "assists": team.assists,
-            "steals": team.steals,
-            "blocks": team.blocks,
-            "personalFouls": team.personalFouls,
-            "points": team.points,
-        }
-        for team in teams
-    ]
-    return jsonify({"teams": teams_schema.dump(teams_data)})
-
-@app.route("/api/v1/teams/<teamName>")
-def get_team(teamName):
     try:
-        team = Team.query.filter_by(name=teamName).first()
-        if team:
-            team_data = {
-                "teamAbbreviation": team.teamAbbreviation,
-                "name": team.name,
-                "location": team.location,
-                "fieldGoals": team.fieldGoals,
-                "threePointPercent": team.threePointPercent,
-                "freeThrowPercent": team.freeThrowPercent,
-                "rebounds": team.rebounds,
-                "assists": team.assists,
-                "steals": team.steals,
-                "blocks": team.blocks,
-                "personalFouls": team.personalFouls,
-                "points": team.points,
-            }
-            return jsonify(team_data)
-        else:
-            return jsonify({"error": "Team not found."}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-    
+        team1 = Team.query.filter_by(name=team1Name).first()
+        team2 = Team.query.filter_by(name=team2Name).first()
 
-@app.route("/api/v1/players/<player>")
-def get_player(player):
-    try:
-        player = Player.query.filter_by(player=player).first()
-        if player:
-            player_data = {
-            "player": player.player,
-            "teamAbbreviation": player.teamAbbreviation,
-            "games": player.games,
-            "fieldGoals": player.fieldGoals,
-            "threePointPercent": player.threePointPercent,
-            "freeThrowPercent": player.freeThrowPercent,
-            "rebounds": player.rebounds,
-            "assists": player.assists,
-            "steals": player.steals,
-            "blocks": player.blocks,
-            "personalFouls": player.personalFouls,
-            "points": player.points,
-            }
-            return jsonify(player_data)
-        else:
-            return jsonify({"error": "Player not found."}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        if team1 and team2:
+            selected_field_value_team1 = getattr(team1, selectedField)
+            selected_field_value_team2 = getattr(team2, selectedField)
 
 @app.route("/api/v1/teams/<teamName>/<selectedField>")
 def get_team_field(teamName, selectedField):

@@ -53,17 +53,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Function to fetch data and display chart
     function fetchAndDisplayChart(selectedField, team1Name, team2Name) {
         // Fetch data for the selected field for both teams
         fetch(`http://127.0.0.1:5000/api/v1/teams/${team1Name}/${selectedField}`)
             .then(response => response.json())
             .then(dataTeam1 => {
+                // Correct the variable name here: team2NAme to team2Name
                 fetch(`http://127.0.0.1:5000/api/v1/teams/${team2Name}/${selectedField}`)
                     .then(response => response.json())
                     .then(dataTeam2 => {
                         // Get data for the chart
-                        const xValues = [team1.name, team2.name];
+                        const xValues = [team1Name, team2Name];
                         const yValues = [dataTeam1.value, dataTeam2.value];
                         const barColors = ["red", "green"];
 
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const chartContainer = document.getElementById('chart-container');
         // Remove any existing chart
         chartContainer.innerHTML = '<canvas id="myChart"></canvas>';
-        
+
         // Create a new chart
         new Chart("myChart", {
             type: "bar",
@@ -95,8 +95,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-
-
-
-
