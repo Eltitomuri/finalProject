@@ -1,10 +1,8 @@
-// team.js
+'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
 
     fetchTeams();
-
-    // Event listener for the Compare Teams button
     document.getElementById('compareButton').addEventListener('click', function () {
         const selectedTeams = getSelectedTeams();
         if (selectedTeams.length === 2) {
@@ -14,11 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    function fetchTeams() {
-        fetch('/api/v1/teams')
-            .then(response => response.json())
-            .then(data => populateTeamTable(data))
-            .catch(error => console.error('Error fetching teams:', error));
+    async function fetchTeams() {
+        let data = await fetch('http://127.0.0.1:5000/api/v1/teams').then(response => response.json());
+        console.log('Fetched data:', data);
+        populateTeamTable(data.teams);
     }
 
     function populateTeamTable(teams) {
@@ -55,14 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleCheckboxChange() {
         const selectedTeams = getSelectedTeams();
 
-        // Disable checkboxes for already selected teams
         const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
         teamCheckboxes.forEach(checkbox => {
             const teamId = checkbox.dataset.teamId;
             checkbox.disabled = selectedTeams.includes(teamId) && !checkbox.checked;
         });
 
-        // Disable Compare button if not exactly two teams are selected
         const compareButton = document.getElementById('compareButton');
         compareButton.disabled = selectedTeams.length !== 2;
     }

@@ -50,7 +50,7 @@ def get_teams():
             "name": team.name,
             "location": team.location,
             "fieldGoals": team.fieldGoals,
-            "threePointPercent": team.threePointsPercent,
+            "threePointPercent": team.threePointPercent,
             "freeThrowPercent": team.freeThrowPercent,
             "rebounds": team.rebounds,
             "assists": team.assists,

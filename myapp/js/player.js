@@ -1,3 +1,5 @@
+'use strict';
+
 document.addEventListener('DOMContentLoaded', function () {
     fetchPlayers();
 
@@ -5,14 +7,14 @@ document.addEventListener('DOMContentLoaded', function () {
         comparePlayers();
     });
 
-    function fetchPlayers() {
-        fetch('/api/v1/players')
-            .then(response => response.json())
-            .then(data => populatePlayerTable(data))
-            .catch(error => console.error('Error fetching players:', error));
+    async function fetchPlayers() {
+        let data = await fetch('http://127.0.0.1:5000/api/v1/players').then(response => response.json());
+        console.log('Fetched data:', data);
+        populatePlayerTable(data.players);
     }
 
     function populatePlayerTable(players) {
+        console.log('Populating table with players:', players);
         const playerTableBody = document.getElementById('playerTableBody');
         playerTableBody.innerHTML = '';
 
@@ -23,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${player.teamAbbreviation}</td>
                 <td>${player.games}</td>
                 <td>${player.fieldGoals}</td>
-                <td>${player.threePointsPercent}</td>
-                <td>${player.freeThrowPercentage}</td>
+                <td>${player.threePointPercent}</td>
+                <td>${player.freeThrowPercent}</td>
                 <td>${player.rebounds}</td>
                 <td>${player.assists}</td>
                 <td>${player.steals}</td>
@@ -35,26 +37,24 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             playerTableBody.appendChild(row);
         });
-        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
-        teamCheckboxes.forEach(checkbox => {
+
+        const compareButton = document.getElementById('compareButton');
+        compareButton.disabled = false;
+
+        const compareCheckboxes = document.querySelectorAll('.compareCheckbox');
+        compareCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', handleCheckboxChange);
         });
-        
 
-    function comparePlayers() {
-        const checkboxes = document.querySelectorAll('.compareCheckbox:checked');
-        const playerIds = Array.from(checkboxes).map(checkbox => checkbox.dataset.playerId);
+        function comparePlayers() {
+            const checkboxes = document.querySelectorAll('.compareCheckbox:checked');
+            const playerIds = Array.from(checkboxes).map(checkbox => checkbox.dataset.playerId);
 
-        if (playerIds.length === 2) {
-            // Redirect to the compare page with selected player IDs
-            window.location.href = `/comparePlayer.html?player1=${playerIds[0]}&player2=${playerIds[1]}`;
-        } else {
-            alert('Please select exactly two players to compare.');
+            if (playerIds.length === 2) {
+                window.location.href = `/comparePlayer.html?player1=${playerIds[0]}&player2=${playerIds[1]}`;
+            } else {
+                alert('Please select exactly two players to compare.');
+            }
         }
     }
-}
-
-    
 });
-
-
