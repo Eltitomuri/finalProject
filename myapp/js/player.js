@@ -7,10 +7,28 @@ document.addEventListener('DOMContentLoaded', function () {
         comparePlayers();
     });
 
+    function comparePlayers() {
+        const checkboxes = document.querySelectorAll('.compareCheckbox:checked');
+        const playerIds = Array.from(checkboxes).map(checkbox => checkbox.dataset.playerId);
+
+        if (playerIds.length === 2) {
+            const compareButton = document.getElementById('compareButton');
+            compareButton.disabled = false;
+            window.location.href = `/comparePlayer.html?player1=${playerIds[0]}&player2=${playerIds[1]}`;
+        } else {
+            alert('Please select exactly two players to compare.');
+        }
+    }
+
     async function fetchPlayers() {
-        let data = await fetch('http://127.0.0.1:5000/api/v1/players').then(response => response.json());
-        console.log('Fetched data:', data);
-        populatePlayerTable(data.players);
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/v1/players');
+            const data = await response.json();
+            console.log('Fetched data:', data);
+            populatePlayerTable(data.players);
+        } catch (error) {
+            console.error('Error fetching players:', error);
+        }
     }
 
     function populatePlayerTable(players) {
@@ -37,24 +55,5 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             playerTableBody.appendChild(row);
         });
-
-        const compareButton = document.getElementById('compareButton');
-        compareButton.disabled = false;
-
-        const compareCheckboxes = document.querySelectorAll('.compareCheckbox');
-        compareCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', handleCheckboxChange);
-        });
-
-        function comparePlayers() {
-            const checkboxes = document.querySelectorAll('.compareCheckbox:checked');
-            const playerIds = Array.from(checkboxes).map(checkbox => checkbox.dataset.playerId);
-
-            if (playerIds.length === 2) {
-                window.location.href = `/comparePlayer.html?player1=${playerIds[0]}&player2=${playerIds[1]}`;
-            } else {
-                alert('Please select exactly two players to compare.');
-            }
-        }
     }
 });

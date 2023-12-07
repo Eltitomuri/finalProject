@@ -25,8 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
         teams.forEach(team => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${team.id}</td>
-                <td>${team.abbreviation}</td>
+                <td>${team.teamAbbreviation}</td>
                 <td>${team.name}</td>
                 <td>${team.location}</td>
                 <td>${team.fieldGoals}</td>

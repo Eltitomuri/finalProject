@@ -1,5 +1,3 @@
-// comparePlayer.js
-
 document.addEventListener('DOMContentLoaded', function () {
     // Get player IDs from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -7,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const player2Id = urlParams.get('player2');
 
     // Fetch player data based on IDs
-    fetch(`/api/players/${player1Id}`)
+    fetch(`http://127.0.0.1:5000/api/v1/players/${player1Id}`)
         .then(response => response.json())
         .then(player1 => {
-            fetch(`/api/players/${player2Id}`)
+            fetch(`http://127.0.0.1:5000/api/v1/players/${player2Id}`)
                 .then(response => response.json())
                 .then(player2 => {
                     displayPlayers(player1, player2);
@@ -58,14 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to fetch data and display chart
     function fetchAndDisplayChart(selectedField, player1Id, player2Id) {
         // Fetch data for the selected field for both players
-        fetch(`/api/players/${player1Id}/${selectedField}`)
+        fetch(`http://127.0.0.1:5000/api/v1/players/${player1Id}/${selectedField}`)
             .then(response => response.json())
             .then(dataPlayer1 => {
-                fetch(`/api/players/${player2Id}/${selectedField}`)
+                fetch(`http://127.0.0.1:5000/api/v1/players/${player2Id}/${selectedField}`)
                     .then(response => response.json())
                     .then(dataPlayer2 => {
                         // Get data for the chart
-                        const xValues = [player1.name, player2.name];
+                        const xValues = [player1Id.name, player2Id.name];
                         const yValues = [dataPlayer1.value, dataPlayer2.value];
                         const barColors = ["red", "green"];
 
@@ -80,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const chartContainer = document.getElementById('chart-container');
         // Remove any existing chart
         chartContainer.innerHTML = '<canvas id="myChart"></canvas>';
-        
+
         // Create a new chart
         new Chart("myChart", {
             type: "bar",
@@ -97,7 +95,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-
-
-
