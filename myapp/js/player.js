@@ -4,8 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchPlayers();
 
     document.getElementById('compareButton').addEventListener('click', function () {
-        comparePlayers();
+        const selectedPlayers = getSelectedPlayers();
+        if (selectedTeams.length === 2) {
+            window.location.href = `/compareTeam.html?team1=${selectedPlayers[0]}&team2=${selectedPlayers[1]}`;
+        } else {
+            alert('Please select exactly two teams for comparison.');
+        }
     });
+
 
     function comparePlayers() {
         const checkboxes = document.querySelectorAll('.compareCheckbox:checked');
@@ -55,5 +61,35 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             playerTableBody.appendChild(row);
         });
+
+
+        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
+        teamCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', handleCheckboxChange);
+        });
+    }
+
+    function handleCheckboxChange() {
+        const selectedTeams = getSelectedTeams();
+        const teamCheckboxes = document.querySelectorAll('.playerCheckbox');
+
+        const checkedCount = Array.from(teamCheckboxes).filter(checkbox => checkbox.checked).length;
+
+        teamCheckboxes.forEach(checkbox => {
+            const teamId = checkbox.dataset.teamId;
+            checkbox.disabled = selectedTeams.includes(teamId) && !checkbox.checked;
+        });
+
+        teamCheckboxes.forEach(checkbox => {
+            checkbox.disabled = checkbox.checked && checkedCount > 1 && !selectedTeams.includes(checkbox.dataset.teamId);
+        });
+
+        const compareButton = document.getElementById('compareButton');
+        compareButton.disabled = selectedTeams.length !== 2;
+    }
+
+    function getSelectedTeams() {
+        const teamCheckboxes = document.querySelectorAll('.teamCheckbox:checked');
+        return Array.from(teamCheckboxes).map(checkbox => checkbox.dataset.teamId);
     }
 });
