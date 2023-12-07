@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const team2Name = urlParams.get('team2');
 
     // Fetch team data based on IDs
-    fetch(`/api/teams/${team1Name}`)
+    fetch(`http://127.0.0.1:5000/api/v1/teams/${team1Name}`)
         .then(response => response.json())
         .then(team1 => {
-            fetch(`/api/teams/${team2Name}`)
+            fetch(`http://127.0.0.1:5000/api/v1/teams/${team2Name}`)
                 .then(response => response.json())
                 .then(team2 => {
                     displayTeams(team1, team2);
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to fetch data and display chart
     function fetchAndDisplayChart(selectedField, team1Name, team2Name) {
         // Fetch data for the selected field for both teams
-        fetch(`/api/teams/${team1Name}/${selectedField}`)
+        fetch(`http://127.0.0.1:5000/api/v1/teams/${team1Name}/${selectedField}`)
             .then(response => response.json())
             .then(dataTeam1 => {
                 fetch(`/api/teams/${team2NAme}/${selectedField}`)
