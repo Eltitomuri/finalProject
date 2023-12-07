@@ -5,6 +5,7 @@ from build_db import main
 from flask_cors import cross_origin, CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import logging
 
 engine = create_engine(
     "postgresql://finalproject_rwmc_user:UgGVSPpBcrx2zBtaWlnLOpm7rq4wXJGr@dpg-clmch6cjtl8s73aimc9g-a.oregon-postgres.render.com/finalproject_rwmc"
@@ -143,7 +144,30 @@ def get_player(player):
             return jsonify({"error": "One or more teams not found."}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+<<<<<<< HEAD
 
+=======
+    
+@app.route("/api/v1/players/<player>/<selectedField>")
+def get_player_field(player, selectedField):
+    try:
+        player = Player.query.filter_by(player=player).first()
+        if player:
+            if hasattr(player, selectedField):
+                selected_field_value = getattr(player, selectedField)
+                if isinstance(selected_field_value, bool):
+                    selected_field_value = str(selected_field_value)
+                return jsonify({"field": selectedField, "value": selected_field_value})
+            else:
+                return jsonify({"error": f"Field '{selectedField}' not found in model."}), 404
+        else:
+            return jsonify({"error": "Player not found."}), 404
+    except Exception as e:
+        logging.error(f"Error occurred while fetching player field: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# hello
+>>>>>>> 79391e721d3350526bef7c8375c0d48e935dee2b
 
 if __name__ == "__main__":
     main()
