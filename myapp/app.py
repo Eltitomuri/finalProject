@@ -116,28 +116,38 @@ def get_player(player):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/api/v1/teams/<teamName>/<selectedField>")
-def get_team_field(teamName, selectedField):
-    try:
-        team = Team.query.filter_by(name=teamName).first()
-        if team:
-            
-            if hasattr(team, selectedField):
-                
-                selected_field_value = getattr(team, selectedField)
-                
-                if isinstance(selected_field_value, bool):
-                   
-                    selected_field_value = str(selected_field_value)
-                return jsonify({"field": selectedField, "value": selected_field_value})
+            if (
+                selected_field_value_team1 is not None
+                and selected_field_value_team2 is not None
+            ):
+                return jsonify(
+                    {
+                        "team1": {
+                            "field": selectedField,
+                            "value": selected_field_value_team1,
+                        },
+                        "team2": {
+                            "field": selectedField,
+                            "value": selected_field_value_team2,
+                        },
+                    }
+                )
             else:
-                return jsonify({"error": f"Field '{selectedField}' not found in model."}), 404
+                return (
+                    jsonify(
+                        {
+                            "error": f"Field '{selectedField}' not found for one or more teams."
+                        }
+                    ),
+                    404,
+                )
         else:
-            return jsonify({"error": "Team not found."}), 404
+            return jsonify({"error": "One or more teams not found."}), 404
     except Exception as e:
-        
-        logging.error(f"Error occurred while fetching team field: {e}")
         return jsonify({"error": str(e)}), 500
+<<<<<<< HEAD
+
+=======
     
 @app.route("/api/v1/players/<player>/<selectedField>")
 def get_player_field(player, selectedField):
@@ -157,21 +167,8 @@ def get_player_field(player, selectedField):
         logging.error(f"Error occurred while fetching player field: {e}")
         return jsonify({"error": str(e)}), 500
 
-@app.route("/api/v1/conferences")
-def get_conference():
-    try:
-        conferences = Conference.query.all()
-        conference_data = [
-            {"eastern": conference.easternConference, "western": conference.westernConference}
-            for conference in conferences
-        ]
-        return jsonify(conference_data)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-
-
+# hello
+>>>>>>> 79391e721d3350526bef7c8375c0d48e935dee2b
 
 if __name__ == "__main__":
     main()
