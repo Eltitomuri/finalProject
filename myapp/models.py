@@ -84,6 +84,26 @@ class TeamSchema(ma.SQLAlchemyAutoSchema):
     personalFouls = ma.auto_field()
     points = ma.auto_field()
 
+class Conference(db.Model):
+    __tablename__ = "conference"
+    easternConference = db.Column(db.String(255), primary_key=True)
+    westernConference = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"<Conference(name={self.easternConference!r})>"
+    
+class ConferenceSchema(ma.SQLAlchemyAutoSchema):
+    """Conference schema"""
+
+    class Meta:
+        """Conference schema"""
+
+        model = Conference
+        load_instance = True
+
+    easternConference = ma.auto_field()
+    westernConference = ma.auto_field()
+
 
 with app.app_context():
     db.create_all()

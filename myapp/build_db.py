@@ -1,5 +1,5 @@
 import pathlib
-from models import Player, Team, db, app
+from models import Player, Team, Conference, db, app
 from config import create_app
 import csv
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 this_dir = pathlib.Path(__file__).parent
 
 
-def init_db(player_filename: str, team_filename: str):
+def init_db(player_filename: str, team_filename: str, conference_filename: str):
     """Initialize the database"""
     engine = create_engine(
         "postgresql://finalproject_rwmc_user:UgGVSPpBcrx2zBtaWlnLOpm7rq4wXJGr@dpg-clmch6cjtl8s73aimc9g-a.oregon-postgres.render.com/finalproject_rwmc"
@@ -17,6 +17,7 @@ def init_db(player_filename: str, team_filename: str):
 
     Player.metadata.create_all(engine)
     Team.metadata.create_all(engine)
+    Conference.metadata.create_all(engine)
     with open(this_dir / f"{player_filename}.csv", "r", encoding="utf8") as f:
         content = csv.DictReader(f)
         for item in content:
@@ -58,6 +59,18 @@ def init_db(player_filename: str, team_filename: str):
             session.add(a_team)
 
     session.commit()
+    
+    with open(this_dir / f"{conference_filename}.csv", "r", encoding="utf8") as f:
+        content = csv.DictReader(f)
+        for item in content:
+            print(f" Conference data: {item}")
+            new_conference = Conference(
+                easternConference=item.get("easternConference"),
+                westernConference=item.get("westernConference"),
+            )
+            session.add(new_conference)
+
+        session.commit()
 
 
 def create_tables():
@@ -67,7 +80,7 @@ def create_tables():
 
 def main():
     create_tables()
-    init_db("player", "team")
+    init_db("player", "team", "conference")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,4 @@
-'use strict';
-
-document.addEventListener('DOMContentLoaded', function () {
+'use strict';document.addEventListener('DOMContentLoaded', function () {
     fetchTeams();
     document.getElementById('compareButton').addEventListener('click', function () {
         const checkedTeams = Array.from(document.querySelectorAll('.teamCheckbox:checked')).map(checkbox => checkbox.dataset.teamId);
@@ -11,19 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             alert('Please select exactly two teams for comparison.');
         }
-    });
-
-    async function fetchTeams() {
+    });    async function fetchTeams() {
         let data = await fetch('http://127.0.0.1:5000/api/v1/teams').then(response => response.json());
         console.log('Fetched data:', data);
         populateTeamTable(data.teams);
-    }
-
-    function populateTeamTable(teams) {
+    }    function populateTeamTable(teams) {
         const teamTableBody = document.getElementById('teamTableBody');
-        teamTableBody.innerHTML = '';
-
-        teams.forEach(team => {
+        teamTableBody.innerHTML = '';        teams.forEach(team => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${team.teamAbbreviation}</td>
@@ -41,33 +33,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><input type="checkbox" class="teamCheckbox" data-team-id="${team.name}"></td>
             `;
             teamTableBody.appendChild(row);
-        });
-
-        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
+        });        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
         teamCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', handleCheckboxChange);
-        });
-
-        function handleCheckboxChange() {
+        });        function handleCheckboxChange() {
             const selectedTeams = getSelectedTeams();
-            const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
-
-            const checkedCount = Array.from(teamCheckboxes).filter(checkbox => checkbox.checked).length;
-
-            teamCheckboxes.forEach(checkbox => {
+            const teamCheckboxes = document.querySelectorAll('.teamCheckbox');            const checkedCount = Array.from(teamCheckboxes).filter(checkbox => checkbox.checked).length;            teamCheckboxes.forEach(checkbox => {
                 const teamId = checkbox.dataset.teamId;
                 checkbox.disabled = selectedTeams.includes(teamId) && !checkbox.checked;
-            });
-
-            teamCheckboxes.forEach(checkbox => {
+            });            teamCheckboxes.forEach(checkbox => {
                 checkbox.disabled = checkbox.checked && checkedCount > 1 && !selectedTeams.includes(checkbox.dataset.teamId);
-            });
-
-            const compareButton = document.getElementById('compareButton');
+            });            const compareButton = document.getElementById('compareButton');
             compareButton.disabled = selectedTeams.length !== 2;
-        }
-
-        function getSelectedTeams() {
+        }        function getSelectedTeams() {
             const teamCheckboxes = document.querySelectorAll('.teamCheckbox:checked');
             return Array.from(teamCheckboxes).map(checkbox => checkbox.dataset.teamId);
         }

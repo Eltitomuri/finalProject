@@ -1,0 +1,70 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-container a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+}
+
+#conferences-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: 20px; /* Add some margin to create space */
+}
+
+.conference-column {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 70%; /* Adjust as needed */
+}
+
+h2 {
+    color: #ffcc00;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add some margin to create space */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+
+
+
+

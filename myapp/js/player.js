@@ -1,95 +1,79 @@
-'use strict';
-
-document.addEventListener('DOMContentLoaded', function () {
-    fetchPlayers();
-
-    document.getElementById('compareButton').addEventListener('click', function () {
-        const selectedPlayers = getSelectedPlayers();
-        if (selectedTeams.length === 2) {
-            window.location.href = `/compareTeam.html?team1=${selectedPlayers[0]}&team2=${selectedPlayers[1]}`;
-        } else {
-            alert('Please select exactly two teams for comparison.');
-        }
-    });
-
-
-    function comparePlayers() {
-        const checkboxes = document.querySelectorAll('.compareCheckbox:checked');
-        const playerIds = Array.from(checkboxes).map(checkbox => checkbox.dataset.playerId);
-
-        if (playerIds.length === 2) {
-            const compareButton = document.getElementById('compareButton');
-            compareButton.disabled = false;
-            window.location.href = `/comparePlayer.html?player1=${playerIds[0]}&player2=${playerIds[1]}`;
-        } else {
-            alert('Please select exactly two players to compare.');
-        }
-    }
-
-    async function fetchPlayers() {
+'use strict';document.addEventListener('DOMContentLoaded', function () {
+    // Fetch and display initial data and chart
+    fetchAndDisplayDataAndChart("fieldGoals");    // Event listener to change the comparison field
+    const compareField = document.getElementById('compare-field');    async function fetchAndDisplayDataAndChart(selectedField) {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/v1/players');
-            const data = await response.json();
-            console.log('Fetched data:', data);
-            populatePlayerTable(data.players);
+            // Retrieve selected players from localStorage
+            const selectedPlayers = JSON.parse(localStorage.getItem('selectedPlayers'));
+            if (!selectedPlayers || selectedPlayers.length !== 2) {
+                console.error('Selected players are not available in localStorage.');
+                return;
+            }            const [player1Name, player2Name] = selectedPlayers;            const [player1, player2] = await Promise.all([
+                fetch(`http://127.0.0.1:5000/api/v1/players/${player1Name}`).then(response => response.json()),
+                fetch(`http://127.0.0.1:5000/api/v1/players/${player2Name}`).then(response => response.json())
+            ]);            displayPlayers(player1, player2);
+            displayPlayerTable(player1, player2);            fetchAndDisplayChart(selectedField, player1, player2);            // Event listener for changing the comparison field
+            compareField.addEventListener('change', function () {
+                const selectedField = this.value;
+                if (!selectedField) {
+                    console.error('Selected field is undefined!');
+                    return;
+                }                fetchAndDisplayChart(selectedField, player1, player2);
+            });
         } catch (error) {
-            console.error('Error fetching players:', error);
+            console.error(`Error fetching initial data: ${error}`);
         }
-    }
-
-    function populatePlayerTable(players) {
-        console.log('Populating table with players:', players);
+    }    // Function to display player names
+    function displayPlayers(player1, player2) {
+        const playerNamesContainer = document.getElementById('player-names');
+        playerNamesContainer.innerHTML = `
+            <div>${player1.player}</div>
+            <div>${player2.player}</div>
+        `;
+    }    // Function to display player information in the table
+    function displayPlayerTable(player1, player2) {
         const playerTableBody = document.getElementById('playerTableBody');
-        playerTableBody.innerHTML = '';
-
-        players.forEach(player => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${player.player}</td>
-                <td>${player.teamAbbreviation}</td>
-                <td>${player.games}</td>
-                <td>${player.fieldGoals}</td>
-                <td>${player.threePointPercent}</td>
-                <td>${player.freeThrowPercent}</td>
-                <td>${player.rebounds}</td>
-                <td>${player.assists}</td>
-                <td>${player.steals}</td>
-                <td>${player.blocks}</td>
-                <td>${player.personalFouls}</td>
-                <td>${player.points}</td>
-                <td><input type="checkbox" class="compareCheckbox" data-player-id="${player.player}"></td>
-            `;
-            playerTableBody.appendChild(row);
+        playerTableBody.innerHTML = '';        // Create a row for Player 1
+        const player1Row = document.createElement('tr');
+        player1Row.innerHTML = `<td>${player1.player}</td>`;
+        const fields = ['player', 'teamAbbreviation', 'games', 'fieldGoals', 'threePointPercent', 'freeThrowPercent', 'rebounds', 'assists', 'steals', 'blocks', 'personalFouls', 'points'];
+        fields.forEach(field => {
+            player1Row.innerHTML += `<td>${player1[field]}</td>`;
         });
-
-
-        const teamCheckboxes = document.querySelectorAll('.teamCheckbox');
-        teamCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', handleCheckboxChange);
+        playerTableBody.appendChild(player1Row);        // Create a row for Player 2
+        const player2Row = document.createElement('tr');
+        player2Row.innerHTML = `<td>${player2.player}</td>`;
+        fields.forEach(field => {
+            player2Row.innerHTML += `<td>${player2[field]}</td>`;
         });
-    }
-
-    function handleCheckboxChange() {
-        const selectedTeams = getSelectedTeams();
-        const teamCheckboxes = document.querySelectorAll('.playerCheckbox');
-
-        const checkedCount = Array.from(teamCheckboxes).filter(checkbox => checkbox.checked).length;
-
-        teamCheckboxes.forEach(checkbox => {
-            const teamId = checkbox.dataset.teamId;
-            checkbox.disabled = selectedTeams.includes(teamId) && !checkbox.checked;
+        playerTableBody.appendChild(player2Row);
+    }    async function fetchAndDisplayChart(selectedField, player1, player2) {
+        try {
+            const [dataPlayer1, dataPlayer2] = await Promise.all([
+                fetch(`http://127.0.0.1:5000/api/v1/players/${player1.player}/${selectedField}`).then(response => response.json()),
+                fetch(`http://127.0.0.1:5000/api/v1/players/${player2.player}/${selectedField}`).then(response => response.json())
+            ]);            console.log('Data for Player 1:', dataPlayer1);
+            console.log('Data for Player 2:', dataPlayer2);            const xValues = [player1.player, player2.player];
+            const yValues = [dataPlayer1.value, dataPlayer2.value];
+            const barColors = ["red", "green"];            createOrUpdateChart(xValues, yValues, barColors);
+        } catch (error) {
+            console.error(`Error fetching chart data: ${error}`);
+        }
+    }    function createOrUpdateChart(xValues, yValues, barColors) {
+        const chartContainer = document.getElementById('chart-container');
+        chartContainer.innerHTML = '<canvas id="myChart"></canvas>';        new Chart("myChart", {
+            type: "bar",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                // Customize options as needed
+            }
         });
-
-        teamCheckboxes.forEach(checkbox => {
-            checkbox.disabled = checkbox.checked && checkedCount > 1 && !selectedTeams.includes(checkbox.dataset.teamId);
-        });
-
-        const compareButton = document.getElementById('compareButton');
-        compareButton.disabled = selectedTeams.length !== 2;
-    }
-
-    function getSelectedTeams() {
-        const teamCheckboxes = document.querySelectorAll('.teamCheckbox:checked');
-        return Array.from(teamCheckboxes).map(checkbox => checkbox.dataset.teamId);
     }
 });
+

@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from config import app, db
-from models import Player, Team, PlayerSchema, TeamSchema
+from models import Player, Team, Conference, PlayerSchema, TeamSchema, ConferenceSchema
 from build_db import main
 from flask_cors import cross_origin, CORS
 from sqlalchemy import create_engine
@@ -17,6 +17,7 @@ CORS(app)
 with app.app_context():
     players_schema = PlayerSchema(many=True)
     teams_schema = TeamSchema(many=True)
+    conference_schema = ConferenceSchema(many=True)
 
 
 @app.route("/api/v1/players")
@@ -156,7 +157,21 @@ def get_player_field(player, selectedField):
         logging.error(f"Error occurred while fetching player field: {e}")
         return jsonify({"error": str(e)}), 500
 
-# hello1
+@app.route("/api/v1/conferences")
+def get_conference():
+    try:
+        conferences = Conference.query.all()
+        conference_data = [
+            {"eastern": conference.easternConference, "western": conference.westernConference}
+            for conference in conferences
+        ]
+        return jsonify(conference_data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
 
 if __name__ == "__main__":
     main()
